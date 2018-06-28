@@ -1,9 +1,19 @@
+const fs = require('fs')
 const http = require('http')
+const https = require('https')
 const port = process.env.PORT || 9993
 const url = require('url')
 const net = require('net')
 
-const server = http.createServer((req, res) => {
+const options = {
+  key: fs.readFileSync('server_key.pem'),
+  cert: fs.readFileSync('server_cert.pem'),
+  ca: fs.readFileSync('ca_cert.pem'),
+  requestCert: true,
+  rejectUnauthorized: true
+}
+
+const server = https.createServer(options, (req, res) => {
   console.log(req.method, req.url)
   const reqUrl = req.url
   const result = reqUrl.includes('//')
