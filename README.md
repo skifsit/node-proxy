@@ -40,7 +40,7 @@ openssl req -new -config client.cnf -key client_key.pem -out client_csr.pem
 ### Sign client CSR
 ```
 openssl x509 -req -extfile client.cnf -passin "pass:password" -in client_csr.pem -CA ca_cert.pem -CAkey ca_key.pem -CAcreateserial -out client_cert.pem
-``
+```
 
 ## Verify server/client certificates
 ```
@@ -52,4 +52,14 @@ openssl verify -CAfile ca_cert.pem client_cert.pem
 ```
 openssl x509 -text -noout -in server_cert.pem
 openssl x509 -text -noout -in client_cert.pem
+```
+
+Command to copy SSH key
+```
+ssh-copy-id -i ~/.ssh/linode_proxy proxyuser@172.104.247.163 -o PubkeyAuthentication=no
+```
+
+Command to sync folders
+```
+rsync -e ssh -vizaP /home/lex/WebstormProjects/node-proxy/ proxyuser@172.104.247.163:/home/proxyuser/node-proxy/ --exclude=node_modules --exclude=.idea --exclude=.git
 ```
